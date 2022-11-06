@@ -6,34 +6,17 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ivory_admin/controllers/image_controller.dart';
 import 'package:ivory_admin/controllers/product_controllers.dart';
-import 'package:ivory_admin/presentation/screen_add_product/widgets/dropdown_widget.dart';
-import 'package:mirai_dropdown_menu/mirai_dropdown_menu.dart';
-
 import '../../controllers/color_controller.dart';
 
 class ProducrAddEditScreen extends StatelessWidget {
   ProducrAddEditScreen({Key? key}) : super(key: key);
-  ProductController productController = Get.put(ProductController());
-  ColorController colorController = Get.put(ColorController());
-  ImageController imageController = Get.put(ImageController());
-  late ValueNotifier<String> mainCategoryNotify;
-  late ValueNotifier<String> categoryNotify;
-  late ValueNotifier<String> sizeNotify;
-  late ValueNotifier<String> shoeSizeNotify;
-  late TextEditingController nameController;
-  late TextEditingController descriptionController;
+  final ProductController productController = Get.put(ProductController());
+  final ColorController colorController = Get.put(ColorController());
+  final ImageController imageController = Get.put(ImageController());
 
   @override
   Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
-
-    mainCategoryNotify = ValueNotifier('Choose Main catagory');
-    categoryNotify = ValueNotifier('Choose Sub catagory');
-    sizeNotify = ValueNotifier('Choose the cloth size');
-    shoeSizeNotify = ValueNotifier('Choose the shoe size');
-    nameController = TextEditingController();
-
-    final List<String> sizes = ['S', 'M', 'L', 'XL', '8', '9', '10', '11'];
 
     return Scaffold(
       appBar: AppBar(
@@ -256,8 +239,8 @@ class ProducrAddEditScreen extends StatelessWidget {
               productController.subCategory = value.toString();
               productController.update();
               productController.newProduct.update(
-                  'subcategory', (_) => productController.mainCategory,
-                  ifAbsent: () => productController.mainCategory);
+                  'subcategory', (_) => productController.subCategory,
+                  ifAbsent: () => productController.subCategory);
             }),
       ),
     );
