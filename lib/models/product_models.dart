@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:core';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Product extends Equatable {
@@ -92,26 +93,26 @@ class Product extends Equatable {
     };
   }
 
-  factory Product.fromMap(Map<String, dynamic> map) {
+  factory Product.fromsnapshot(DocumentSnapshot snapshot) {
     return Product(
-      category: map['category'] as String,
-      colors: List<String>.from((map['colors'] as List<String>)),
-      description: map['description'] as String,
-      images: List<String>.from((map['images'] as List<String>)),
-      mainCategory: map['mainCategory'] as String,
-      name: map['name'] as String,
-      noOfRating: map['noOfRating'] as int,
-      price: map['price'] as double,
-      quantity: map['quantity'] as int,
-      rating: map['rating'] as double,
-      size: List<String>.from((map['size'] as List<String>)),
+      category: snapshot['category'] as String,
+      colors: List<String>.from((snapshot['colors'] as List<String>)),
+      description: snapshot['description'] as String,
+      images: List<String>.from((snapshot['images'] as List<String>)),
+      mainCategory: snapshot['mainCategory'] as String,
+      name: snapshot['name'] as String,
+      noOfRating: snapshot['noOfRating'] as int,
+      price: snapshot['price'] as double,
+      quantity: snapshot['quantity'] as int,
+      rating: snapshot['rating'] as double,
+      size: List<String>.from((snapshot['size'] as List<String>)),
     );
   }
 
   String toJson() => json.encode(toMap());
 
   factory Product.fromJson(String source) =>
-      Product.fromMap(json.decode(source) as Map<String, dynamic>);
+      Product.fromsnapshot(json.decode(source) as DocumentSnapshot<dynamic>);
 
   @override
   bool get stringify => true;

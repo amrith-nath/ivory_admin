@@ -1,9 +1,7 @@
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:ivory_admin/controllers/image_controller.dart';
 import 'package:ivory_admin/controllers/product_controllers.dart';
 import '../../controllers/color_controller.dart';
@@ -29,26 +27,38 @@ class ProducrAddEditScreen extends StatelessWidget {
           child: Column(
             children: [
               GetBuilder(
-                  init: ImageController(),
-                  builder: (imageController) {
+                  init: ProductController(),
+                  builder: (productController) {
                     return Column(
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             imageCardWidget(
-                                width, 'Image 1', imageController.image_1),
+                                width,
+                                'Image 1',
+                                productController.newProduct['images']?[0],
+                                productController.isImageLoading),
                             imageCardWidget(
-                                width, 'Image 2', imageController.image_2),
+                                width,
+                                'Image 2',
+                                productController.newProduct['images']?[1],
+                                productController.isImageLoading),
                           ],
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             imageCardWidget(
-                                width, 'Image 3', imageController.image_3),
+                                width,
+                                'Image 3',
+                                productController.newProduct['images']?[2],
+                                productController.isImageLoading),
                             imageCardWidget(
-                                width, 'Image 4', imageController.image_4),
+                                width,
+                                'Image 4',
+                                productController.newProduct['images']?[3],
+                                productController.isImageLoading),
                           ],
                         ),
                         const SizedBox(
@@ -312,10 +322,11 @@ class ProducrAddEditScreen extends StatelessWidget {
                 color: Colors.black,
               )),
           style: TextStyle(
-              color: Colors.grey.shade700,
-              fontSize: 15,
-              decoration: TextDecoration.none,
-              fontWeight: FontWeight.w400),
+            color: Colors.grey.shade700,
+            fontSize: 15,
+            decoration: TextDecoration.none,
+            fontWeight: FontWeight.w400,
+          ),
           onChanged: (value) {
             productController.newProduct.update(
                 label.toLowerCase(), (_) => value,
@@ -326,7 +337,8 @@ class ProducrAddEditScreen extends StatelessWidget {
     );
   }
 
-  Column imageCardWidget(double width, String hintText, XFile? image) {
+  Column imageCardWidget(
+      double width, String hintText, String? image, bool isloading) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -337,27 +349,39 @@ class ProducrAddEditScreen extends StatelessWidget {
               elevation: 6,
               color: Colors.white,
               child: Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey.shade400),
-                    borderRadius: BorderRadius.circular(5)),
-                child: image == null
-                    ? const SizedBox(
-                        child: Center(
-                          child: Text(
-                            'Pick Image',
-                            style: TextStyle(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey.shade400),
+                      borderRadius: BorderRadius.circular(5)),
+                  child: isloading
+                      ? const SizedBox(
+                          child: Center(
+                            child: CircularProgressIndicator(
                               color: Colors.grey,
                             ),
                           ),
-                        ),
-                      )
-                    : Image.file(
-                        File(
-                          image.path,
-                        ),
-                        fit: BoxFit.cover,
-                      ),
-              )),
+                        )
+                      : image == null
+                          ? const SizedBox(
+                              child: Center(
+                                child: Text(
+                                  'Pick Image',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                            )
+                          // : Image.file(
+                          //     File(
+                          //       image.path,
+                          //     ),
+                          //     fit: BoxFit.cover,
+                          //   ),
+                          : Image(
+                              image: NetworkImage(image),
+                              fit: BoxFit.cover,
+                              alignment: Alignment.topCenter,
+                            ))),
         ),
       ],
     );

@@ -1,8 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:ivory_admin/controllers/product_controllers.dart';
+import 'package:ivory_admin/services/storage_services/storage_services.dart';
 
 class ImageController extends GetxController {
+  StorageService storageService = StorageService();
+  ProductController productController = Get.put(ProductController());
+
   XFile? image_1;
   XFile? image_2;
   XFile? image_3;
@@ -19,7 +26,16 @@ class ImageController extends GetxController {
       image_2 = tempImages[1];
       image_3 = tempImages[2];
       image_4 = tempImages[3];
-      update();
+      productController.isImageLoading = true;
+      productController.update();
+      await storageService.uploadImage(tempImages);
+      List<String> downloadImage =
+          await storageService.downloadImage(tempImages);
+      productController.newProduct.update('images', (_) => downloadImage,
+          ifAbsent: () => downloadImage);
+      productController.isImageLoading = false;
+
+      productController.update();
     } else if (tempImages.length < 4) {
       Get.snackbar(
         'Error',

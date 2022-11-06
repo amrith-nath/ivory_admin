@@ -3,13 +3,13 @@ import 'package:ivory_admin/models/product_models.dart';
 
 class ProductController extends GetxController {
   List<Product> products = Product.products.obs;
-
+  var isImageLoading = false;
   var newProduct = {}.obs;
 
   get price => newProduct['price'];
   get quantity => newProduct['quantity'];
   get name => newProduct['name'];
-  get images => newProduct['images'];
+  List<String> get images => newProduct['images'];
   get description => newProduct['description'];
   get maincategory => newProduct['mainCategory'];
   get subcategory => newProduct['subcategory'];
