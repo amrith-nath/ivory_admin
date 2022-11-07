@@ -5,10 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Order extends Equatable {
-  final int id;
+  final String? id;
   final int customerid;
   final List<int> productId;
-  final double paymentAmount;
+  final double deliveryFee;
   final double total;
   final double subTotal;
   final bool isAccepted;
@@ -16,10 +16,10 @@ class Order extends Equatable {
   final bool isDeliverd;
   final DateTime orderPlacedAt;
   const Order({
-    required this.id,
+    this.id,
     required this.customerid,
     required this.productId,
-    required this.paymentAmount,
+    required this.deliveryFee,
     required this.total,
     required this.subTotal,
     required this.isAccepted,
@@ -29,10 +29,10 @@ class Order extends Equatable {
   });
 
   Order copyWith({
-    int? id,
+    String? id,
     int? customerid,
     List<int>? productId,
-    double? paymentAmount,
+    double? deliveryFee,
     double? total,
     double? subTotal,
     bool? isAccepted,
@@ -44,7 +44,7 @@ class Order extends Equatable {
       id: id ?? this.id,
       customerid: customerid ?? this.customerid,
       productId: productId ?? this.productId,
-      paymentAmount: paymentAmount ?? this.paymentAmount,
+      deliveryFee: deliveryFee ?? this.deliveryFee,
       total: total ?? this.total,
       subTotal: subTotal ?? this.subTotal,
       isAccepted: isAccepted ?? this.isAccepted,
@@ -59,7 +59,7 @@ class Order extends Equatable {
       'id': id,
       'customerid': customerid,
       'productId': productId,
-      'paymentAmount': paymentAmount,
+      'deliveryFee': deliveryFee,
       'total': total,
       'subTotal': subTotal,
       'isAccepted': isAccepted,
@@ -69,23 +69,26 @@ class Order extends Equatable {
     };
   }
 
-  factory Order.fromSnapshot(DocumentSnapshot snap) {
+  factory Order.fromMap(Map<String, dynamic> map) {
     return Order(
-      id: snap['id'] as int,
-      customerid: snap['customerid'] as int,
-      productId: List<int>.from((snap['productId'] as List<int>)),
-      paymentAmount: snap['paymentAmount'] as double,
-      total: snap['total'] as double,
-      subTotal: snap['subTotal'] as double,
-      isAccepted: snap['isAccepted'] as bool,
-      isShiped: snap['isShiped'] as bool,
-      isDeliverd: snap['isDeliverd'] as bool,
+      id: map['id'] != null ? map['id'] as String : null,
+      customerid: map['customerid'] as int,
+      productId: List<int>.from((map['productId'] as List<int>)),
+      deliveryFee: map['deliveryFee'] as double,
+      total: map['total'] as double,
+      subTotal: map['subTotal'] as double,
+      isAccepted: map['isAccepted'] as bool,
+      isShiped: map['isShiped'] as bool,
+      isDeliverd: map['isDeliverd'] as bool,
       orderPlacedAt:
-          DateTime.fromMillisecondsSinceEpoch(snap['orderPlacedAt'] as int),
+          DateTime.fromMillisecondsSinceEpoch(map['orderPlacedAt'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
+
+  factory Order.fromJson(String source) =>
+      Order.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;
@@ -93,10 +96,10 @@ class Order extends Equatable {
   @override
   List<Object> get props {
     return [
-      id,
+      id!,
       customerid,
       productId,
-      paymentAmount,
+      deliveryFee,
       total,
       subTotal,
       isAccepted,
@@ -105,4 +108,29 @@ class Order extends Equatable {
       orderPlacedAt,
     ];
   }
+
+  static List<Order> orders = [
+    Order(
+      customerid: 2,
+      productId: const [1, 2],
+      deliveryFee: 2200,
+      total: 2100,
+      subTotal: 2000,
+      isAccepted: false,
+      isShiped: false,
+      isDeliverd: false,
+      orderPlacedAt: DateTime.now(),
+    ),
+    Order(
+      customerid: 2,
+      productId: const [1, 2],
+      deliveryFee: 3300,
+      total: 3400,
+      subTotal: 3000,
+      isAccepted: false,
+      isShiped: false,
+      isDeliverd: false,
+      orderPlacedAt: DateTime.now(),
+    ),
+  ];
 }

@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Product extends Equatable {
+  final String? id;
   final String category;
   final List<String> colors;
   final String description;
@@ -20,6 +21,7 @@ class Product extends Equatable {
   final List<String> size;
 
   const Product({
+    this.id,
     required this.category,
     required this.colors,
     required this.description,
@@ -51,6 +53,7 @@ class Product extends Equatable {
   }
 
   Product copyWith({
+    String? id,
     String? category,
     List<String>? colors,
     String? description,
@@ -64,6 +67,7 @@ class Product extends Equatable {
     List<String>? size,
   }) {
     return Product(
+      id: id ?? this.id,
       category: category ?? this.category,
       colors: colors ?? this.colors,
       description: description ?? this.description,
@@ -80,6 +84,7 @@ class Product extends Equatable {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'category': category,
       'colors': colors,
       'description': description,
@@ -96,6 +101,7 @@ class Product extends Equatable {
 
   factory Product.fromsnapshot(DocumentSnapshot snapshot) {
     return Product(
+      id: snapshot.id,
       category: snapshot['category'] as String,
       colors: List.from((snapshot['colors'])),
       description: snapshot['description'] as String,

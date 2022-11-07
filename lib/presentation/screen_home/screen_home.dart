@@ -39,7 +39,7 @@ class ScreenHome extends StatelessWidget {
               text: 'Go to Orders',
               ontap: () {
                 Get.to(
-                  () => const ScreenOrders(),
+                  () => ScreenOrders(),
                   duration: const Duration(milliseconds: 500),
                   transition: Transition.cupertino,
                 );
