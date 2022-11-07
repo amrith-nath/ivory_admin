@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
+import 'package:ivory_admin/models/order_model.dart';
 
 import 'package:ivory_admin/models/product_models.dart';
 
@@ -12,6 +13,12 @@ class DatabaseService {
   Stream<List<Product>> getProducts() {
     return fireStore.collection('products').snapshots().map((snapshot) {
       return (snapshot.docs.map((doc) => Product.fromsnapshot(doc)).toList());
+    });
+  }
+
+  Stream<List<Order>> getOrders() {
+    return fireStore.collection('orders').snapshots().map((snapshot) {
+      return (snapshot.docs.map((doc) => Order.fromSnapshot(doc)).toList());
     });
   }
 

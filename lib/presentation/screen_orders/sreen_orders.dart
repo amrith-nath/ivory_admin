@@ -1,11 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+
 import 'package:ivory_admin/controllers/product_controllers.dart';
 import 'package:ivory_admin/models/order_model.dart';
-import 'package:intl/intl.dart';
 
 class ScreenOrders extends StatelessWidget {
   ScreenOrders({super.key});
-  ProductController productController = ProductController();
+  ProductController productController = Get.put(ProductController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +39,21 @@ class ScreenOrders extends StatelessWidget {
 class OrderCard extends StatelessWidget {
   Order order;
   ProductController controller;
-  OrderCard({super.key, required this.order, required this.controller});
+  OrderCard({
+    Key? key,
+    required this.order,
+    required this.controller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var products = controller.products
+        .where((element) => order.productId.contains(element.id))
+        .toList();
+    log(products.length.toString());
+
+    log(controller.products.length.toString());
+
     return Card(
       color: Colors.grey.shade200,
       child: SizedBox(
@@ -138,13 +154,30 @@ class OrderCard extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(
+              height: 20,
+            ),
             ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: 5,
+                itemCount: products.length,
                 itemBuilder: (context, index) {
-                  return const SizedBox(
-                    height: 20,
+                  return Row(
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 50,
+                        child: Image(
+                          image: NetworkImage(products[index].images[0]),
+                        ),
+                      ),
+                      Text(
+                        products[index].name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )
+                    ],
                   );
                 }),
             Row(

@@ -6,18 +6,20 @@ import 'package:equatable/equatable.dart';
 
 class Order extends Equatable {
   final String? id;
-  final int customerid;
-  final List<int> productId;
+  final String customerId;
+  final List<String> productId;
   final double deliveryFee;
   final double total;
   final double subTotal;
   final bool isAccepted;
   final bool isShiped;
   final bool isDeliverd;
+  final bool isRejected;
+
   final DateTime orderPlacedAt;
   const Order({
     this.id,
-    required this.customerid,
+    required this.customerId,
     required this.productId,
     required this.deliveryFee,
     required this.total,
@@ -25,24 +27,26 @@ class Order extends Equatable {
     required this.isAccepted,
     required this.isShiped,
     required this.isDeliverd,
+    required this.isRejected,
     required this.orderPlacedAt,
   });
 
   Order copyWith({
     String? id,
-    int? customerid,
-    List<int>? productId,
+    String? customerId,
+    List<String>? productId,
     double? deliveryFee,
     double? total,
     double? subTotal,
     bool? isAccepted,
     bool? isShiped,
     bool? isDeliverd,
+    bool? isRejected,
     DateTime? orderPlacedAt,
   }) {
     return Order(
       id: id ?? this.id,
-      customerid: customerid ?? this.customerid,
+      customerId: customerId ?? this.customerId,
       productId: productId ?? this.productId,
       deliveryFee: deliveryFee ?? this.deliveryFee,
       total: total ?? this.total,
@@ -50,6 +54,7 @@ class Order extends Equatable {
       isAccepted: isAccepted ?? this.isAccepted,
       isShiped: isShiped ?? this.isShiped,
       isDeliverd: isDeliverd ?? this.isDeliverd,
+      isRejected: isRejected ?? this.isRejected,
       orderPlacedAt: orderPlacedAt ?? this.orderPlacedAt,
     );
   }
@@ -57,7 +62,7 @@ class Order extends Equatable {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'id': id,
-      'customerid': customerid,
+      'customerid': customerId,
       'productId': productId,
       'deliveryFee': deliveryFee,
       'total': total,
@@ -69,26 +74,24 @@ class Order extends Equatable {
     };
   }
 
-  factory Order.fromMap(Map<String, dynamic> map) {
+  factory Order.fromSnapshot(DocumentSnapshot snap) {
     return Order(
-      id: map['id'] != null ? map['id'] as String : null,
-      customerid: map['customerid'] as int,
-      productId: List<int>.from((map['productId'] as List<int>)),
-      deliveryFee: map['deliveryFee'] as double,
-      total: map['total'] as double,
-      subTotal: map['subTotal'] as double,
-      isAccepted: map['isAccepted'] as bool,
-      isShiped: map['isShiped'] as bool,
-      isDeliverd: map['isDeliverd'] as bool,
+      id: snap.id,
+      customerId: snap['customerid'] as String,
+      productId: List<String>.from((snap['productId'] as List<int>)),
+      deliveryFee: snap['deliveryFee'] as double,
+      total: snap['total'] as double,
+      subTotal: snap['subTotal'] as double,
+      isAccepted: snap['isAccepted'] as bool,
+      isShiped: snap['isShiped'] as bool,
+      isDeliverd: snap['isDeliverd'] as bool,
+      isRejected: snap['isRejected'] as bool,
       orderPlacedAt:
-          DateTime.fromMillisecondsSinceEpoch(map['orderPlacedAt'] as int),
+          DateTime.fromMillisecondsSinceEpoch(snap['orderPlacedAt'] as int),
     );
   }
 
   String toJson() => json.encode(toMap());
-
-  factory Order.fromJson(String source) =>
-      Order.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;
@@ -97,7 +100,7 @@ class Order extends Equatable {
   List<Object> get props {
     return [
       id!,
-      customerid,
+      customerId,
       productId,
       deliveryFee,
       total,
@@ -111,25 +114,27 @@ class Order extends Equatable {
 
   static List<Order> orders = [
     Order(
-      customerid: 2,
-      productId: const [1, 2],
+      customerId: '2',
+      productId: const ['p0ACeO2WBeVSqG7tfjr7'],
       deliveryFee: 2200,
       total: 2100,
       subTotal: 2000,
       isAccepted: false,
       isShiped: false,
       isDeliverd: false,
+      isRejected: false,
       orderPlacedAt: DateTime.now(),
     ),
     Order(
-      customerid: 2,
-      productId: const [1, 2],
+      customerId: '2',
+      productId: const ['p0ACeO2WBeVSqG7tfjr7', 'OibJPrhV9TJ4B0Jleqm5'],
       deliveryFee: 3300,
       total: 3400,
       subTotal: 3000,
       isAccepted: false,
       isShiped: false,
       isDeliverd: false,
+      isRejected: false,
       orderPlacedAt: DateTime.now(),
     ),
   ];
