@@ -1,8 +1,22 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:ivory_admin/models/product_models.dart';
+import 'package:ivory_admin/services/database_services/database_service.dart';
 
 class ProductController extends GetxController {
-  List<Product> products = Product.products.obs;
+  DatabaseService databaseService = DatabaseService();
+  var products = <Product>[].obs;
+
+  @override
+  void onInit() {
+    products.bindStream(databaseService.getProducts());
+
+    log(products.length.toString());
+
+    super.onInit();
+  }
+
   var isImageLoading = false;
   var newProduct = {}.obs;
 
@@ -14,9 +28,10 @@ class ProductController extends GetxController {
   get maincategory => newProduct['mainCategory'];
   get subcategory => newProduct['subcategory'];
   get colors => newProduct['colors'];
+  // List<String> get sizes => newProduct['sizes'];
 
   String mainCategory = 'Men';
   String subCategory = 'Fasion';
-  String size = 'S';
+  List<String> size = [];
   String shoeSize = '8';
 }

@@ -20,7 +20,6 @@ class ProductCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 00),
       margin: const EdgeInsets.only(top: 20),
       width: double.infinity,
-      height: 490,
       child: Card(
         elevation: 20,
         color: Colors.grey.shade300,
@@ -70,9 +69,9 @@ class ProductCard extends StatelessWidget {
                 Row(
                   children: [
                     productSizeWidget(product.size[0]),
-                    productSizeWidget(product.size[1]),
-                    productSizeWidget(product.size[2]),
-                    productSizeWidget(product.size[3]),
+                    productSizeWidget(product.size[0]),
+                    productSizeWidget(product.size[0]),
+                    productSizeWidget(product.size[0]),
                   ],
                 ),
                 const Spacer(),
@@ -220,28 +219,28 @@ class ProductCard extends StatelessWidget {
                             MaterialStatePropertyAll<Color>(Colors.black)),
                   ),
                 ),
-                SizedBox(
-                  height: 60,
-                  width: 170,
-                  child: ElevatedButton.icon(
-                    onPressed: onEdit,
-                    icon: const Icon(
-                      Icons.edit,
-                      color: Colors.black,
-                    ),
-                    label: const Text(
-                      'Edit',
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                    style: const ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll<Color>(
-                        Colors.blueAccent,
-                      ),
-                    ),
-                  ),
-                ),
+                // SizedBox(
+                //   height: 60,
+                //   width: 170,
+                //   child: ElevatedButton.icon(
+                //     onPressed: onEdit,
+                //     icon: const Icon(
+                //       Icons.edit,
+                //       color: Colors.black,
+                //     ),
+                //     label: const Text(
+                //       'Edit',
+                //       style: TextStyle(
+                //         color: Colors.black,
+                //       ),
+                //     ),
+                //     style: const ButtonStyle(
+                //       backgroundColor: MaterialStatePropertyAll<Color>(
+                //         Colors.blueAccent,
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             )
           ],
@@ -287,6 +286,7 @@ class ProductCard extends StatelessWidget {
         child: Image(
           image: NetworkImage(image),
           fit: BoxFit.cover,
+          alignment: Alignment.topCenter,
         ),
       ),
     );

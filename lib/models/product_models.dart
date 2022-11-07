@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:core';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -96,257 +97,21 @@ class Product extends Equatable {
   factory Product.fromsnapshot(DocumentSnapshot snapshot) {
     return Product(
       category: snapshot['category'] as String,
-      colors: List<String>.from((snapshot['colors'] as List<String>)),
+      colors: List.from((snapshot['colors'])),
       description: snapshot['description'] as String,
-      images: List<String>.from((snapshot['images'] as List<String>)),
+      images: List.from((snapshot['images'])),
       mainCategory: snapshot['mainCategory'] as String,
       name: snapshot['name'] as String,
       noOfRating: snapshot['noOfRating'] as int,
-      price: snapshot['price'] as double,
+      price: double.parse(snapshot['price'].toString()),
       quantity: snapshot['quantity'] as int,
-      rating: snapshot['rating'] as double,
-      size: List<String>.from((snapshot['size'] as List<String>)),
+      rating: double.parse(snapshot['rating'].toString()),
+      size: List<String>.from((snapshot['size'])),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory Product.fromJson(String source) =>
-      Product.fromsnapshot(json.decode(source) as DocumentSnapshot<dynamic>);
-
   @override
   bool get stringify => true;
-
-  static List<Product> products = [
-    Product(
-        category: 'fasion',
-        colors: [
-          '1E212B',
-          '4D8B31',
-          'E09F3E',
-          '335C67',
-        ],
-        description:
-            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ',
-        images: [
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        ],
-        mainCategory: 'men',
-        name: 'Spring Dress',
-        noOfRating: 0,
-        price: 2400,
-        quantity: 10,
-        rating: 0,
-        size: ['s', 'm', 'l', 'xl']),
-    Product(
-        category: 'fasion',
-        colors: [
-          '1E212B',
-          '4D8B31',
-          'E09F3E',
-          '335C67',
-        ],
-        description:
-            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ',
-        images: [
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        ],
-        mainCategory: 'men',
-        name: 'Spring Dress',
-        noOfRating: 0,
-        price: 2400,
-        quantity: 10,
-        rating: 0,
-        size: ['s', 'm', 'l', 'xl']),
-    Product(
-        category: 'fasion',
-        colors: [
-          '1E212B',
-          '4D8B31',
-          'E09F3E',
-          '335C67',
-        ],
-        description:
-            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ',
-        images: [
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        ],
-        mainCategory: 'men',
-        name: 'Spring Dress',
-        noOfRating: 0,
-        price: 2400,
-        quantity: 10,
-        rating: 0,
-        size: ['s', 'm', 'l', 'xl']),
-    Product(
-        category: 'fasion',
-        colors: [
-          '1E212B',
-          '4D8B31',
-          'E09F3E',
-          '335C67',
-        ],
-        description:
-            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ',
-        images: [
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        ],
-        mainCategory: 'men',
-        name: 'Spring Dress',
-        noOfRating: 0,
-        price: 2400,
-        quantity: 10,
-        rating: 0,
-        size: ['s', 'm', 'l', 'xl']),
-    Product(
-        category: 'fasion',
-        colors: [
-          '1E212B',
-          '4D8B31',
-          'E09F3E',
-          '335C67',
-        ],
-        description:
-            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ',
-        images: [
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        ],
-        mainCategory: 'men',
-        name: 'Spring Dress',
-        noOfRating: 0,
-        price: 2400,
-        quantity: 10,
-        rating: 0,
-        size: ['s', 'm', 'l', 'xl']),
-    Product(
-        category: 'fasion',
-        colors: [
-          '1E212B',
-          '4D8B31',
-          'E09F3E',
-          '335C67',
-        ],
-        description:
-            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ',
-        images: [
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        ],
-        mainCategory: 'men',
-        name: 'Spring Dress',
-        noOfRating: 0,
-        price: 2400,
-        quantity: 10,
-        rating: 0,
-        size: ['s', 'm', 'l', 'xl']),
-    Product(
-        category: 'fasion',
-        colors: [
-          '1E212B',
-          '4D8B31',
-          'E09F3E',
-          '335C67',
-        ],
-        description:
-            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ',
-        images: [
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        ],
-        mainCategory: 'men',
-        name: 'Spring Dress',
-        noOfRating: 0,
-        price: 2400,
-        quantity: 10,
-        rating: 0,
-        size: ['s', 'm', 'l', 'xl']),
-    Product(
-        category: 'fasion',
-        colors: [
-          '1E212B',
-          '4D8B31',
-          'E09F3E',
-          '335C67',
-        ],
-        description:
-            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ',
-        images: [
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        ],
-        mainCategory: 'men',
-        name: 'Spring Dress',
-        noOfRating: 0,
-        price: 2400,
-        quantity: 10,
-        rating: 0,
-        size: ['s', 'm', 'l', 'xl']),
-    Product(
-        category: 'fasion',
-        colors: [
-          '1E212B',
-          '4D8B31',
-          'E09F3E',
-          '335C67',
-        ],
-        description:
-            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ',
-        images: [
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        ],
-        mainCategory: 'men',
-        name: 'Spring Dress',
-        noOfRating: 0,
-        price: 2400,
-        quantity: 10,
-        rating: 0,
-        size: ['s', 'm', 'l', 'xl']),
-    Product(
-        category: 'fasion',
-        colors: [
-          '1E212B',
-          '4D8B31',
-          'E09F3E',
-          '335C67',
-        ],
-        description:
-            'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi ',
-        images: [
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-          'https://images.unsplash.com/photo-1622625841997-dfbffc98f4c9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80',
-        ],
-        mainCategory: 'men',
-        name: 'Spring Dress',
-        noOfRating: 0,
-        price: 2400,
-        quantity: 10,
-        rating: 0,
-        size: ['s', 'm', 'l', 'xl']),
-  ];
 }

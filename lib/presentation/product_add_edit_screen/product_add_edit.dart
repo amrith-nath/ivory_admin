@@ -4,6 +4,8 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
 import 'package:ivory_admin/controllers/image_controller.dart';
 import 'package:ivory_admin/controllers/product_controllers.dart';
+import 'package:ivory_admin/models/product_models.dart';
+import 'package:ivory_admin/services/database_services/database_service.dart';
 import '../../controllers/color_controller.dart';
 
 class ProducrAddEditScreen extends StatelessWidget {
@@ -11,6 +13,7 @@ class ProducrAddEditScreen extends StatelessWidget {
   final ProductController productController = Get.put(ProductController());
   final ColorController colorController = Get.put(ColorController());
   final ImageController imageController = Get.put(ImageController());
+  final DatabaseService databaseService = DatabaseService();
 
   @override
   Widget build(BuildContext context) {
@@ -173,6 +176,45 @@ class ProducrAddEditScreen extends StatelessWidget {
                 height: 10,
               ),
               Text(
+                'Sizes',
+                style: TextStyle(
+                  color: Colors.grey.shade700,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Divider(
+                color: Colors.grey.shade800,
+              ),
+              GetBuilder(
+                  init: ProductController(),
+                  builder: (productController) {
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            choiceChipWidget('xs'),
+                            choiceChipWidget('s'),
+                            choiceChipWidget('m'),
+                            choiceChipWidget('l'),
+                            choiceChipWidget('x'),
+                            choiceChipWidget('xl'),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            choiceChipWidget('07'),
+                            choiceChipWidget('08'),
+                            choiceChipWidget('09'),
+                            choiceChipWidget('10'),
+                          ],
+                        ),
+                      ],
+                    );
+                  }),
+              Text(
                 'Colors',
                 style: TextStyle(
                   color: Colors.grey.shade700,
@@ -203,8 +245,27 @@ class ProducrAddEditScreen extends StatelessWidget {
                 child: ElevatedButton(
                     style:
                         ElevatedButton.styleFrom(backgroundColor: Colors.black),
-                    onPressed: () {
-                      log(productController.newProduct.toString());
+                    onPressed: () async {
+                      await databaseService.addProduct(
+                        Product(
+                          category: productController.newProduct['subcategory'],
+                          colors: productController.newProduct['colors'],
+                          description:
+                              productController.newProduct['description'],
+                          images: productController.newProduct['images'],
+                          mainCategory:
+                              productController.newProduct['mainCategory'],
+                          name: productController.newProduct['name'],
+                          noOfRating: 0,
+                          price: double.parse(
+                              productController.newProduct['price']),
+                          quantity: int.parse(
+                              productController.newProduct['quantity']),
+                          rating: 0.0,
+                          size: productController.size,
+                        ),
+                      );
+                      Get.back();
                     },
                     child: const Text('Add Product')),
               ),
@@ -213,6 +274,44 @@ class ProducrAddEditScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ChoiceChip choiceChipWidget(String label) {
+    return ChoiceChip(
+      selectedColor: Colors.black,
+      disabledColor: Colors.grey.shade900,
+      backgroundColor: Colors.grey.shade500,
+      label: Text(label.toUpperCase()),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 20),
+      labelStyle: const TextStyle(color: Colors.white),
+      onSelected: (value) {
+        addChipSize(label);
+      },
+      selected: isContains(label),
+      pressElevation: 5,
+    );
+  }
+
+  bool isContains(String label) {
+    if (productController.size.contains(label)) {
+      return true;
+    }
+    return false;
+  }
+
+  addChipSize(String label) {
+    if (productController.size.contains(label)) {
+      productController.size.remove(label);
+    } else {
+      if (productController.size.length < 4) {
+        productController.size.add(label);
+      } else {
+        Get.showSnackbar(const GetSnackBar(
+          message: 'Only 4 sizes can be selected',
+        ));
+      }
+    }
+    productController.update();
   }
 
   SizedBox radioTileMain(double width, String value) {

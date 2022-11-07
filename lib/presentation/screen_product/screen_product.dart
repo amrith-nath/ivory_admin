@@ -4,6 +4,7 @@ import 'package:ivory_admin/controllers/product_controllers.dart';
 import 'package:ivory_admin/models/product_models.dart';
 import 'package:ivory_admin/presentation/product_add_edit_screen/product_add_edit.dart';
 import 'package:ivory_admin/presentation/screen_product/widgets/product_card_widget.dart';
+import 'package:ivory_admin/services/database_services/database_service.dart';
 
 import '../screen_add_product/screen_add_product.dart';
 
@@ -12,6 +13,8 @@ class ScreenProduct extends StatelessWidget {
     Key? key,
   }) : super(key: key);
   ProductController productController = Get.put(ProductController());
+
+  DatabaseService databaseService = DatabaseService();
 
   @override
   Widget build(BuildContext context) {
@@ -60,25 +63,19 @@ class ScreenProduct extends StatelessWidget {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20))),
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: productController.products.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ProductCard(
-                    onDelete: () {},
-                    onEdit: () {
-                      Get.to(
-                        () => ScreenAddProduct(
-                          product: productController.products[index],
-                        ),
-                        transition: Transition.downToUp,
-                        duration: const Duration(milliseconds: 400),
-                      );
-                    },
-                    product: productController.products[index],
-                  );
-                },
+              child: Obx(
+                () => ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: productController.products.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ProductCard(
+                      onDelete: () {},
+                      onEdit: () {},
+                      product: productController.products[index],
+                    );
+                  },
+                ),
               ),
             ),
           ),

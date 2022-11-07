@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ivory_admin/presentation/screen_product/screen_product.dart';
+import 'package:ivory_admin/presentation/screen_user/screen_user.dart';
 
 class ScreenHome extends StatelessWidget {
   const ScreenHome({Key? key}) : super(key: key);
@@ -23,7 +24,15 @@ class ScreenHome extends StatelessWidget {
                   transition: Transition.cupertino,
                 );
               }),
-          homeContainerWidget(text: 'Go to Users', ontap: () {}),
+          homeContainerWidget(
+              text: 'Go to Users',
+              ontap: () {
+                Get.to(
+                  () => const ScreenUser(),
+                  duration: const Duration(milliseconds: 500),
+                  transition: Transition.cupertino,
+                );
+              }),
         ],
       ),
     );
