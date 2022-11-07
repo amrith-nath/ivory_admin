@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:ivory_admin/presentation/screen_product/screen_product.dart';
 import 'package:ivory_admin/presentation/screen_user/screen_user.dart';
 
+import '../screen_orders/sreen_orders.dart';
+
 class ScreenHome extends StatelessWidget {
   const ScreenHome({Key? key}) : super(key: key);
 
@@ -29,6 +31,15 @@ class ScreenHome extends StatelessWidget {
               ontap: () {
                 Get.to(
                   () => const ScreenUser(),
+                  duration: const Duration(milliseconds: 500),
+                  transition: Transition.cupertino,
+                );
+              }),
+          homeContainerWidget(
+              text: 'Go to Orders',
+              ontap: () {
+                Get.to(
+                  () => const ScreenOrders(),
                   duration: const Duration(milliseconds: 500),
                   transition: Transition.cupertino,
                 );
