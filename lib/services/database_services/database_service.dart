@@ -23,15 +23,25 @@ class DatabaseService {
   }
 
   Future<void> addProduct(Product product) async {
+    final docProduct = fireStore.collection('products').doc();
     try {
-      await fireStore.collection('products').add(product.toMap());
+      await docProduct.set(product.toMap(docProduct));
     } catch (e) {
       Get.showSnackbar(GetSnackBar(
         message: e.toString(),
       ));
     }
-    Get.showSnackbar(GetSnackBar(
+    Get.showSnackbar(const GetSnackBar(
       message: 'item added successfully',
     ));
+  }
+
+  Future<void> updateOrderStatus(
+      Order order, String field, dynamic value) async {
+    await fireStore
+        .collection('orders')
+        .where('id', isEqualTo: order.id)
+        .get()
+        .then((snap) => snap.docs.first.reference.update({field: value}));
   }
 }

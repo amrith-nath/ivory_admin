@@ -1,9 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:ivory_admin/controllers/order_controller.dart';
 
 import 'package:ivory_admin/controllers/product_controllers.dart';
 import 'package:ivory_admin/models/order_model.dart';
@@ -11,6 +14,8 @@ import 'package:ivory_admin/models/order_model.dart';
 class ScreenOrders extends StatelessWidget {
   ScreenOrders({super.key});
   ProductController productController = Get.put(ProductController());
+  OrderController orderController = Get.put(OrderController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,15 +25,26 @@ class ScreenOrders extends StatelessWidget {
       ),
       body: Column(
         children: [
+          // ElevatedButton(
+          //     onPressed: () {
+          //       fireStore
+          //           .collection('orders')
+          //           .where('id', isEqualTo: orderController.orders[0].id)
+          //           .get()
+          //           .then((snap) =>
+          //               snap.docs.first.reference.update({'isAccepted': true}));
+          //     },
+          //     child: Text('kill')),
           Expanded(
-            child: ListView.builder(
-                itemCount: Order.orders.length,
-                itemBuilder: (context, index) {
-                  return OrderCard(
-                    order: Order.orders[index],
-                    controller: productController,
-                  );
-                }),
+            child: Obx(
+              () => ListView.builder(
+                  itemCount: orderController.orders.length,
+                  itemBuilder: (context, index) {
+                    return OrderCard(
+                      order: orderController.orders[index],
+                    );
+                  }),
+            ),
           )
         ],
       ),
@@ -38,21 +54,28 @@ class ScreenOrders extends StatelessWidget {
 
 class OrderCard extends StatelessWidget {
   Order order;
-  ProductController controller;
+  final ProductController controller = Get.find();
+  final OrderController orderController = Get.find();
+  final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
   OrderCard({
     Key? key,
     required this.order,
-    required this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var products = controller.products
-        .where((element) => order.productId.contains(element.id))
-        .toList();
-    log(products.length.toString());
+    var products = controller.products.where(
+      (e) {
+        return order.productId.contains(e.id);
+      },
+    ).toList();
 
-    log(controller.products.length.toString());
+    // var idList = order.productId;
+    // for (var a in idList) {
+    //   log(a);
+    // }
+    // log('length  ${idList.length}');
 
     return Card(
       color: Colors.grey.shade200,
@@ -199,22 +222,48 @@ class OrderCard extends StatelessWidget {
       children: [
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-          onPressed: !order.isAccepted ? () {} : null,
+          onPressed: !order.isAccepted
+              ? !order.isRejected
+                  ? () {
+                      orderController.updateOrderStatus(
+                          order, 'isAccepted', true);
+                    }
+                  : null
+              : null,
           child: const Text('Approve'),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-          onPressed: !order.isAccepted ? () {} : null,
+          onPressed: !order.isRejected
+              ? () {
+                  orderController.updateOrderStatus(order, 'isRejected', true);
+                  orderController.updateOrderStatus(order, 'isAccepted', false);
+                }
+              : null,
           child: const Text('Reject'),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-          onPressed: order.isAccepted ? () {} : null,
+          onPressed: order.isAccepted
+              ? !order.isShiped
+                  ? () {
+                      orderController.updateOrderStatus(
+                          order, 'isShiped', true);
+                    }
+                  : null
+              : null,
           child: const Text('Shipped'),
         ),
         ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
-          onPressed: order.isShiped ? () {} : null,
+          onPressed: order.isShiped
+              ? !order.isDeliverd
+                  ? () {
+                      orderController.updateOrderStatus(
+                          order, 'isDeliverd', true);
+                    }
+                  : null
+              : null,
           child: const Text('Deliverd'),
         ),
       ],

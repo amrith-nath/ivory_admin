@@ -248,6 +248,7 @@ class ProducrAddEditScreen extends StatelessWidget {
                     onPressed: () async {
                       await databaseService.addProduct(
                         Product(
+                          // id: productController.newProduct['id'],
                           category: productController.newProduct['subcategory'],
                           colors: productController.newProduct['colors'],
                           description:

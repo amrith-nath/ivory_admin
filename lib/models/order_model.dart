@@ -76,18 +76,17 @@ class Order extends Equatable {
 
   factory Order.fromSnapshot(DocumentSnapshot snap) {
     return Order(
-      id: snap.id,
-      customerId: snap['customerid'] as String,
-      productId: List<String>.from((snap['productId'] as List<int>)),
-      deliveryFee: snap['deliveryFee'] as double,
-      total: snap['total'] as double,
-      subTotal: snap['subTotal'] as double,
+      id: snap['id'],
+      customerId: snap['customerId'] as String,
+      productId: List<String>.from((snap['productId'] as List)),
+      deliveryFee: double.parse(snap['deliveryFee'].toString()),
+      total: double.parse(snap['total'].toString()),
+      subTotal: double.parse(snap['subTotal'].toString()),
       isAccepted: snap['isAccepted'] as bool,
       isShiped: snap['isShiped'] as bool,
       isDeliverd: snap['isDeliverd'] as bool,
       isRejected: snap['isRejected'] as bool,
-      orderPlacedAt:
-          DateTime.fromMillisecondsSinceEpoch(snap['orderPlacedAt'] as int),
+      orderPlacedAt: DateTime.now(),
     );
   }
 

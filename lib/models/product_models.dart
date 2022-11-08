@@ -1,7 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 import 'dart:core';
-import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -82,9 +80,9 @@ class Product extends Equatable {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap(DocumentReference docRef) {
     return <String, dynamic>{
-      'id': id,
+      'id': docRef.id,
       'category': category,
       'colors': colors,
       'description': description,
@@ -101,7 +99,7 @@ class Product extends Equatable {
 
   factory Product.fromsnapshot(DocumentSnapshot snapshot) {
     return Product(
-      id: snapshot.id,
+      id: snapshot['id'] as String,
       category: snapshot['category'] as String,
       colors: List.from((snapshot['colors'])),
       description: snapshot['description'] as String,
@@ -116,7 +114,7 @@ class Product extends Equatable {
     );
   }
 
-  String toJson() => json.encode(toMap());
+  // String toJson() => json.encode(toMap());
 
   @override
   bool get stringify => true;
