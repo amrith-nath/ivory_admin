@@ -17,6 +17,14 @@ class ProductController extends GetxController {
     super.onInit();
   }
 
+  Future<void> updateProduct(
+    Product product,
+    String field,
+    double value,
+  ) async {
+    await databaseService.updateProduct(product, field, value);
+  }
+
   var isImageLoading = false;
   var newProduct = {}.obs;
 

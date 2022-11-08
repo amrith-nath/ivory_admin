@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:ivory_admin/controllers/product_controllers.dart';
 
 import '../../../models/product_models.dart';
 
 class ProductCard extends StatelessWidget {
-  const ProductCard(
+  ProductCard(
       {Key? key,
       required this.product,
       required this.onDelete,
@@ -14,8 +18,14 @@ class ProductCard extends StatelessWidget {
   final Function() onDelete;
   final Function() onEdit;
 
+  final ProductController productController = Get.find();
   @override
   Widget build(BuildContext context) {
+    TextEditingController priceController =
+        TextEditingController(text: product.price.toString());
+    TextEditingController quantityController =
+        TextEditingController(text: product.quantity.toString());
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 00),
       margin: const EdgeInsets.only(top: 20),
@@ -24,6 +34,7 @@ class ProductCard extends StatelessWidget {
         elevation: 20,
         color: Colors.grey.shade300,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -48,8 +59,10 @@ class ProductCard extends StatelessWidget {
                   ),
                   Text(
                     product.description,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 14,
+                      color: Colors.grey.shade700,
+                      fontStyle: FontStyle.italic,
                     ),
                   ),
                 ],
@@ -69,9 +82,9 @@ class ProductCard extends StatelessWidget {
                 Row(
                   children: [
                     productSizeWidget(product.size[0]),
-                    productSizeWidget(product.size[0]),
-                    productSizeWidget(product.size[0]),
-                    productSizeWidget(product.size[0]),
+                    productSizeWidget(product.size[1]),
+                    productSizeWidget(product.size[2]),
+                    productSizeWidget(product.size[3]),
                   ],
                 ),
                 const Spacer(),
@@ -195,55 +208,114 @@ class ProductCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(
-                  height: 60,
-                  width: 170,
-                  child: ElevatedButton.icon(
-                    onPressed: onDelete,
-                    icon: Icon(
-                      Icons.delete,
-                      color: Colors.red.shade400,
+            const Divider(
+              color: Colors.black,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        textFieldWidget(100, 50, 'Price', priceController),
+                        textFieldWidget(
+                            100, 50, 'Quantity', quantityController),
+                        SizedBox(
+                          height: 40,
+                          width: 120,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              productController.updateProduct(product, 'price',
+                                  double.parse(priceController.text));
+
+                              productController.updateProduct(
+                                  product,
+                                  'quantity',
+                                  double.parse(quantityController.text));
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black),
+                            child: const Text(
+                              'Update',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    label: Text(
-                      'Delete',
-                      style: TextStyle(
-                        color: Colors.red.shade400,
-                      ),
-                    ),
-                    style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll<Color>(Colors.black)),
                   ),
-                ),
-                // SizedBox(
-                //   height: 60,
-                //   width: 170,
-                //   child: ElevatedButton.icon(
-                //     onPressed: onEdit,
-                //     icon: const Icon(
-                //       Icons.edit,
-                //       color: Colors.black,
-                //     ),
-                //     label: const Text(
-                //       'Edit',
-                //       style: TextStyle(
-                //         color: Colors.black,
-                //       ),
-                //     ),
-                //     style: const ButtonStyle(
-                //       backgroundColor: MaterialStatePropertyAll<Color>(
-                //         Colors.blueAccent,
-                //       ),
-                //     ),
-                //   ),
-                // ),
-              ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        height: 40,
+                        width: 120,
+                        child: ElevatedButton.icon(
+                          onPressed: onDelete,
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.red.shade400,
+                          ),
+                          label: Text(
+                            'Delete',
+                            style: TextStyle(
+                              color: Colors.red.shade400,
+                            ),
+                          ),
+                          style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  Colors.black)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  SizedBox textFieldWidget(double width, double height, String label,
+      TextEditingController controller,
+      {int? lines}) {
+    return SizedBox(
+      height: height,
+      width: width,
+      child: Card(
+        child: TextFormField(
+          keyboardType: TextInputType.number,
+          controller: controller,
+          maxLines: lines ?? 1,
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+              focusedBorder: const OutlineInputBorder(borderSide: BorderSide()),
+              border: const OutlineInputBorder(borderSide: BorderSide()),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              contentPadding: const EdgeInsets.only(
+                left: 5,
+                top: 10,
+              ),
+              labelText: label,
+              labelStyle: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 13,
+                color: Colors.black,
+              )),
+          style: TextStyle(
+            color: Colors.grey.shade700,
+            fontSize: 15,
+            decoration: TextDecoration.none,
+            fontWeight: FontWeight.w400,
+          ),
+          onChanged: (value) {},
         ),
       ),
     );

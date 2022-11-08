@@ -260,7 +260,7 @@ class ProducrAddEditScreen extends StatelessWidget {
                           noOfRating: 0,
                           price: double.parse(
                               productController.newProduct['price']),
-                          quantity: int.parse(
+                          quantity: double.parse(
                               productController.newProduct['quantity']),
                           rating: 0.0,
                           size: productController.size,

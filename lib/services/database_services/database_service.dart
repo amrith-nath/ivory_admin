@@ -1,11 +1,13 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
 import 'package:ivory_admin/models/order_model.dart';
 
 import 'package:ivory_admin/models/product_models.dart';
+import 'package:ivory_admin/models/user_model.dart';
 
 class DatabaseService {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
@@ -19,6 +21,12 @@ class DatabaseService {
   Stream<List<Order>> getOrders() {
     return fireStore.collection('orders').snapshots().map((snapshot) {
       return (snapshot.docs.map((doc) => Order.fromSnapshot(doc)).toList());
+    });
+  }
+
+  Stream<List<UserModel>> getUsers() {
+    return fireStore.collection('users').snapshots().map((snapshot) {
+      return (snapshot.docs.map((doc) => UserModel.fromSnapShot(doc)).toList());
     });
   }
 
@@ -41,6 +49,15 @@ class DatabaseService {
     await fireStore
         .collection('orders')
         .where('id', isEqualTo: order.id)
+        .get()
+        .then((snap) => snap.docs.first.reference.update({field: value}));
+  }
+
+  Future<void> updateProduct(
+      Product product, String field, dynamic value) async {
+    await fireStore
+        .collection('products')
+        .where('id', isEqualTo: product.id)
         .get()
         .then((snap) => snap.docs.first.reference.update({field: value}));
   }

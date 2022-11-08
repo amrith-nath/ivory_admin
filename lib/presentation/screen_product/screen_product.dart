@@ -27,42 +27,33 @@ class ScreenProduct extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 0),
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            width: double.infinity,
-            height: 160,
-            child: InkWell(
-              onTap: () {
-                Get.to(() => ProducrAddEditScreen(),
-                    transition: Transition.downToUp,
-                    duration: const Duration(milliseconds: 400));
-              },
-              child: const Card(
-                borderOnForeground: true,
-                margin: EdgeInsets.all(10),
-                color: Colors.black,
-                child: Center(
-                  child: Text(
-                    "Add Product",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // Container(
+          //   padding: const EdgeInsets.symmetric(horizontal: 0),
+          //   margin: const EdgeInsets.symmetric(horizontal: 10),
+          //   width: double.infinity,
+          //   height: 160,
+          //   child: InkWell(
+          //     onTap: () {},
+          //     child: const Card(
+          //       borderOnForeground: true,
+          //       margin: EdgeInsets.all(10),
+          //       color: Colors.black,
+          //       child: Center(
+          //         child: Text(
+          //           "Add Product",
+          //           style: TextStyle(
+          //             color: Colors.white,
+          //             fontSize: 24,
+          //             fontWeight: FontWeight.w300,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
           Expanded(
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 10),
-              clipBehavior: Clip.hardEdge,
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
               child: Obx(
                 () => ListView.builder(
                   physics: const BouncingScrollPhysics(),
@@ -80,6 +71,23 @@ class ScreenProduct extends StatelessWidget {
             ),
           ),
         ],
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SizedBox(
+        width: 200,
+        height: 60,
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(backgroundColor: Colors.black),
+          onPressed: () {
+            Get.to(() => ProducrAddEditScreen(),
+                transition: Transition.downToUp,
+                duration: const Duration(milliseconds: 400));
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [Icon(Icons.add), Text('Add Product')],
+          ),
+        ),
       ),
     );
   }

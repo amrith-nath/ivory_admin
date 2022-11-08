@@ -14,7 +14,7 @@ class Product extends Equatable {
   final String name;
   final int noOfRating;
   final double price;
-  final int quantity;
+  final double quantity;
   final double rating;
   final List<String> size;
 
@@ -60,7 +60,7 @@ class Product extends Equatable {
     String? name,
     int? noOfRating,
     double? price,
-    int? quantity,
+    double? quantity,
     double? rating,
     List<String>? size,
   }) {
@@ -108,7 +108,7 @@ class Product extends Equatable {
       name: snapshot['name'] as String,
       noOfRating: snapshot['noOfRating'] as int,
       price: double.parse(snapshot['price'].toString()),
-      quantity: snapshot['quantity'] as int,
+      quantity: double.parse(snapshot['quantity'].toString()),
       rating: double.parse(snapshot['rating'].toString()),
       size: List<String>.from((snapshot['size'])),
     );
