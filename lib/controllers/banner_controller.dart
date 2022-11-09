@@ -13,21 +13,29 @@ class BannerController extends GetxController {
   var banners = <Banner>[].obs;
   var newBanner = {}.obs;
 
-  pickImage() async {
-    XFile? image = await picker.pickImage(source: ImageSource.gallery);
+  var isImageLoading = false;
 
-    if (image != null) {
-      await storageService.uploadBannerImage(image);
-      var imageUrl = await storageService.downloadBannerImage(image);
-      newBanner.update('image', (_) => imageUrl, ifAbsent: () => imageUrl);
-    }
-  }
-
-  get image => newBanner['image'];
-  get tag => newBanner['tag'];
   @override
   void onInit() {
     banners.bindStream(databaseService.getBanners());
     super.onInit();
   }
+
+  pickImage() async {
+    XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      isImageLoading = true;
+      update();
+      await storageService.uploadBannerImage(image);
+      var imageUrl = await storageService.downloadBannerImage(image);
+      newBanner.update('image', (_) => imageUrl, ifAbsent: () => imageUrl);
+      isImageLoading = false;
+
+      update();
+    }
+  }
+
+  get image => newBanner['image'];
+  get tag => newBanner['tag'];
 }

@@ -85,7 +85,10 @@ class ScreenProduct extends StatelessWidget {
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [Icon(Icons.add), Text('Add Product')],
+            children: const [
+              Icon(Icons.add),
+              Text('Add Product'),
+            ],
           ),
         ),
       ),
