@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
+import 'package:ivory_admin/models/banner_model.dart';
 import 'package:ivory_admin/models/order_model.dart';
 
 import 'package:ivory_admin/models/product_models.dart';
@@ -28,6 +29,26 @@ class DatabaseService {
     return fireStore.collection('users').snapshots().map((snapshot) {
       return (snapshot.docs.map((doc) => UserModel.fromSnapShot(doc)).toList());
     });
+  }
+
+  Stream<List<Banner>> getBanners() {
+    return fireStore.collection('banners').snapshots().map((snapshot) {
+      return (snapshot.docs.map((doc) => Banner.fromSnapshot(doc)).toList());
+    });
+  }
+
+  Future<void> addBanner(Banner banner) async {
+    final docProduct = fireStore.collection('banners').doc();
+    try {
+      await docProduct.set(banner.toMap(docProduct));
+    } catch (e) {
+      Get.showSnackbar(GetSnackBar(
+        message: e.toString(),
+      ));
+    }
+    Get.showSnackbar(const GetSnackBar(
+      message: 'item added successfully',
+    ));
   }
 
   Future<void> addProduct(Product product) async {

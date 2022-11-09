@@ -14,6 +14,12 @@ class StorageService {
     }
   }
 
+  Future<void> uploadBannerImage(XFile image) async {
+    await storage
+        .ref('products/images/${image.name}')
+        .putFile(File(image.path));
+  }
+
   Future<List<String>> downloadImage(List<XFile> images) async {
     List<String> imageUrls = [];
 
@@ -24,5 +30,12 @@ class StorageService {
     }
 
     return imageUrls;
+  }
+
+  Future<String> downloadBannerImage(XFile image) async {
+    String url =
+        await storage.ref('products/images/${image.name}').getDownloadURL();
+
+    return url;
   }
 }

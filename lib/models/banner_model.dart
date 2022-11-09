@@ -22,7 +22,7 @@ class Banner extends Equatable {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap(DocumentReference docbanner) {
     return <String, dynamic>{
       'tag': tag,
       'image': image,
@@ -35,8 +35,6 @@ class Banner extends Equatable {
       image: snap['image'] as String,
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   @override
   bool get stringify => true;
