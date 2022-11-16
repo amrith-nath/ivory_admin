@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/utils.dart';
 import 'package:ivory_admin/models/banner_model.dart';
+import 'package:ivory_admin/models/coupen_model.dart';
 import 'package:ivory_admin/models/order_model.dart';
 
 import 'package:ivory_admin/models/product_models.dart';
@@ -37,10 +38,30 @@ class DatabaseService {
     });
   }
 
+  Stream<List<Coupen>> getCoupens() {
+    return fireStore.collection('coupens').snapshots().map((snapshot) {
+      return (snapshot.docs.map((doc) => Coupen.fromSnapshot(doc)).toList());
+    });
+  }
+
   Future<void> addBanner(Banner banner) async {
     final docProduct = fireStore.collection('banners').doc();
     try {
       await docProduct.set(banner.toMap(docProduct));
+    } catch (e) {
+      Get.showSnackbar(GetSnackBar(
+        message: e.toString(),
+      ));
+    }
+    Get.showSnackbar(const GetSnackBar(
+      message: 'item added successfully',
+    ));
+  }
+
+  Future<void> addCoupen(Coupen coupen) async {
+    final docProduct = fireStore.collection('coupens').doc();
+    try {
+      await docProduct.set(coupen.toMap(docProduct));
     } catch (e) {
       Get.showSnackbar(GetSnackBar(
         message: e.toString(),

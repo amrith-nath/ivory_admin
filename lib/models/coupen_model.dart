@@ -4,39 +4,43 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
-class Coupenn extends Equatable {
+class Coupen extends Equatable {
+  final String? id;
   final String code;
   final double amount;
-  const Coupenn({
+  const Coupen({
+    this.id,
     required this.code,
     required this.amount,
   });
 
-  Coupenn copyWith({
+  Coupen copyWith({
+    String? id,
     String? code,
     double? amount,
   }) {
-    return Coupenn(
+    return Coupen(
+      id: id ?? this.id,
       code: code ?? this.code,
       amount: amount ?? this.amount,
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toMap(DocumentReference doc) {
     return <String, dynamic>{
+      'id': doc.id,
       'code': code,
       'amount': amount,
     };
   }
 
-  factory Coupenn.fromSnapshot(DocumentSnapshot snap) {
-    return Coupenn(
+  factory Coupen.fromSnapshot(DocumentSnapshot snap) {
+    return Coupen(
+      id: snap['id'] as String,
       code: snap['code'] as String,
-      amount: snap['amount'] as double,
+      amount: double.parse(snap['amount'].toString()),
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   @override
   bool get stringify => true;
