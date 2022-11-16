@@ -17,74 +17,88 @@ class ScreenHome extends StatelessWidget {
         title: const Text('Ivory Admin Panel'),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            homeContainerWidget(
-                text: 'Go to Products',
-                ontap: () {
-                  Get.to(
-                    () => ScreenProduct(),
-                    duration: const Duration(milliseconds: 500),
-                    transition: Transition.cupertino,
-                  );
-                }),
-            homeContainerWidget(
-                text: 'Go to Users',
-                ontap: () {
-                  Get.to(
-                    () => ScreenUser(),
-                    duration: const Duration(milliseconds: 500),
-                    transition: Transition.cupertino,
-                  );
-                }),
-            homeContainerWidget(
-                text: 'Go to Orders',
-                ontap: () {
-                  Get.to(
-                    () => ScreenOrders(),
-                    duration: const Duration(milliseconds: 500),
-                    transition: Transition.cupertino,
-                  );
-                }),
-            homeContainerWidget(
-                text: 'Go to Banners',
-                ontap: () {
-                  Get.to(
-                    () => ScreenBanners(),
-                    duration: const Duration(milliseconds: 500),
-                    transition: Transition.cupertino,
-                  );
-                }),
-            homeContainerWidget(
-                text: 'Go to Coupens',
-                ontap: () {
-                  Get.to(
-                    () => ScreenCoupens(),
-                    duration: const Duration(milliseconds: 500),
-                    transition: Transition.cupertino,
-                  );
-                }),
-          ],
-        ),
+      body: GridView(
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        children: [
+          homeCardWidget(
+            text: 'Go to Products',
+            icon: Icons.inventory_2_outlined,
+            ontap: () {
+              Get.to(
+                () => ScreenProduct(),
+                duration: const Duration(milliseconds: 500),
+                transition: Transition.cupertino,
+              );
+            },
+          ),
+          homeCardWidget(
+              icon: Icons.person,
+              text: 'Go to Users',
+              ontap: () {
+                Get.to(
+                  () => ScreenUser(),
+                  duration: const Duration(milliseconds: 500),
+                  transition: Transition.cupertino,
+                );
+              }),
+          homeCardWidget(
+              icon: Icons.shopping_cart_outlined,
+              text: 'Go to Orders',
+              ontap: () {
+                Get.to(
+                  () => ScreenOrders(),
+                  duration: const Duration(milliseconds: 500),
+                  transition: Transition.cupertino,
+                );
+              }),
+          homeCardWidget(
+              icon: Icons.add_a_photo_outlined,
+              text: 'Go to Banners',
+              ontap: () {
+                Get.to(
+                  () => ScreenBanners(),
+                  duration: const Duration(milliseconds: 500),
+                  transition: Transition.cupertino,
+                );
+              }),
+          homeCardWidget(
+              icon: Icons.local_offer_outlined,
+              text: 'Go to Coupens',
+              ontap: () {
+                Get.to(
+                  () => ScreenCoupens(),
+                  duration: const Duration(milliseconds: 500),
+                  transition: Transition.cupertino,
+                );
+              }),
+        ],
       ),
     );
   }
 
-  Container homeContainerWidget(
-      {required String text, required Function() ontap}) {
-    return Container(
-      margin: const EdgeInsets.only(top: 50),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      width: double.infinity,
-      height: 150,
+  Card homeCardWidget(
+      {required String text,
+      required IconData icon,
+      required Function() ontap}) {
+    return Card(
+      elevation: 10,
+      color: Colors.black,
       child: InkWell(
         onTap: ontap,
-        child: Card(
-          borderOnForeground: true,
-          color: Colors.black,
-          child: Center(
-            child: Text(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              icon,
+              color: Colors.white,
+              size: 50,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Text(
               text,
               style: const TextStyle(
                 color: Colors.white,
@@ -92,7 +106,7 @@ class ScreenHome extends StatelessWidget {
                 fontWeight: FontWeight.w300,
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
