@@ -11,4 +11,7 @@ class UserController extends GetxController {
     users.bindStream(databaseService.getUsers());
     super.onInit();
   }
+
+
+
 }
